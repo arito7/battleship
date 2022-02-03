@@ -1,0 +1,111 @@
+:root {
+  --board-size: calc(100vw / 2 / 10 - 1rem);
+  --enemy-bgc: #ae5656;
+  --player-bgc: #5656ae;
+  --main-bgc: rgb(70, 85, 92);
+  --header-bgc: var(--main-bgc);
+  --cell-bgc: rgb(111, 162, 185);
+  --cell-occupied: #ae9999;
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr;
+}
+
+.header {
+  background-color: var(--header-bgc);
+  display: grid;
+  color: white;
+  justify-content: center;
+}
+
+.main {
+  background-color: var(--main-bgc);
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+}
+
+.enemyField,
+.playerField {
+  margin: 1rem;
+  border-radius: 1rem;
+  display: grid;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.playerField {
+  background-color: var(--player-bgc);
+}
+
+.enemyField {
+  background-color: var(--enemy-bgc);
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, var(--board-size));
+  grid-template-rows: repeat(10, var(--board-size));
+  gap: 0.2rem;
+}
+
+.cell {
+  border-radius: 0.2rem;
+  cursor: pointer;
+  background-color: var(--cell-bgc);
+}
+.cell:hover:not(.missed):not(.hit) {
+  scale: 0.9;
+  background-color: #cdcdcd;
+}
+
+.cell.occupied {
+  background-color: var(--cell-occupied);
+}
+
+.cell.hit {
+  background-color: red;
+}
+
+.cell.missed {
+  background-color: #343434;
+}
+
+.modal {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background-color: #34343477;
+  /* display: grid; */
+  padding: 20vh 2rem;
+  justify-content: center;
+  align-content: flex-start;
+}
+
+.modal-content {
+  background-color: #454545;
+  border-radius: 1rem;
+  padding: 2rem;
+  display: grid;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}

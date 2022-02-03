@@ -12,4 +12,4 @@ const Ship = (length) => {
   return { length, hit, isSunk };
 };
 
-module.exports = Ship;
+export { Ship };
