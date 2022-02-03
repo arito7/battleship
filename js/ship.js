@@ -1,15 +1,14 @@
 const Ship = (length) => {
-  const state = Array(length).fill(0);
-  const hit = (pos) => {
-    if (pos <= length) {
-      state[pos - 1] = 1;
+  let life = length;
+  const hit = () => {
+    if (life) {
+      life -= 1;
       return true;
     }
     return false;
   };
-  const isSunk = () => {
-    return !state.includes(0);
-  };
+  const isSunk = () => !life;
+
   return { length, hit, isSunk };
 };
 
