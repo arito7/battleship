@@ -45,6 +45,9 @@ body {
   border-radius: 1rem;
   display: grid;
   justify-content: center;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  grid-template-rows: auto 1fr;
   padding: 1rem;
 }
 
