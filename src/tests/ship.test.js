@@ -1,4 +1,4 @@
-import { Ship } from '../js/ship';
+import Ship from '../js/ship';
 
 test('returns length', () => {
   expect(Ship(6).length).toBe(6);

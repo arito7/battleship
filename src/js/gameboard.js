@@ -1,6 +1,6 @@
-import { Ship } from './ship';
+import Ship from './ship';
 
-const Gameboard = (() => {
+export default (() => {
   const SIZE = 10;
   const EMPTY = 0;
   const MISSED = 1;
@@ -13,7 +13,7 @@ const Gameboard = (() => {
    * @param {number} y y-coordinate
    * @returns true if within bounds of gameboard, false otherwise
    */
-  const isWithinBounds = (y, x) => y < 10 && x < 10;
+  const isWithinBounds = (y, x) => y < 10 && x < 10 && y > -1 && x > -1;
 
   const create = () => {
     const board = [
@@ -104,5 +104,3 @@ const Gameboard = (() => {
 
   return { create, SIZE, EMPTY, MISSED, HIT, HORIZONTAL, VERTICAL };
 })();
-
-export { Gameboard };

@@ -1,5 +1,6 @@
-const Ship = (length) => {
+export default (length) => {
   let life = length;
+
   const hit = () => {
     if (life) {
       life -= 1;
@@ -11,5 +12,3 @@ const Ship = (length) => {
 
   return { length, hit, isSunk };
 };
-
-export { Ship };
