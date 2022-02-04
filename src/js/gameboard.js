@@ -13,7 +13,7 @@ export default (() => {
    * @param {number} y y-coordinate
    * @returns true if within bounds of gameboard, false otherwise
    */
-  const isWithinBounds = (y, x) => y < 10 && x < 10 && y > -1 && x > -1;
+  const isWithinBounds = (y, x) => y < SIZE && x < SIZE && y > -1 && x > -1;
 
   const create = () => {
     const board = [
