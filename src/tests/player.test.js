@@ -1,8 +1,15 @@
-// const player = require('../js/player');
-// const gameboard = require('../js/gameboard');
+import Player from '../js/player';
+import Gameboard from '../js/gameboard';
 
-// test.todo('player can place ship in valid position', () => {});
+test('player attack returns true on hit', () => {
+  const p1 = Player(Gameboard.create());
+  const p2 = Player(Gameboard.create());
+  p2.placeShip(1, 1, 3);
+  expect(p1.attack(1, 1, p2)).toBe(true);
+});
 
-// test.todo('player cannot place ship in valid position', () => {});
-
-// test.todo('ai will not make illegal moves', () => {});
+test('player attack returns false on miss', () => {
+  const p1 = Player(Gameboard.create());
+  const p2 = Player(Gameboard.create());
+  expect(p1.attack(1, 1, p2)).toBe(false);
+});
