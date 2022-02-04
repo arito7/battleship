@@ -7,7 +7,6 @@ export default (() => {
   const HIT = 2;
   const HORIZONTAL = 0;
   const VERTICAL = 1;
-
   /**
    * @param {number} x x-coordinate
    * @param {number} y y-coordinate
@@ -16,6 +15,7 @@ export default (() => {
   const isWithinBounds = (y, x) => y < SIZE && x < SIZE && y > -1 && x > -1;
 
   const create = () => {
+    const ships = [];
     const board = [
       Array(10).fill(EMPTY),
       Array(10).fill(EMPTY),
@@ -28,6 +28,8 @@ export default (() => {
       Array(10).fill(EMPTY),
       Array(10).fill(EMPTY),
     ];
+    const isAttackableCell = (y, x) =>
+      board[y][x] !== HIT && board[y][x] !== MISSED;
     /**
      * @param {number} y y-coordinate
      * @param {number} x x-coordinate
@@ -37,6 +39,7 @@ export default (() => {
      */
     const placeShip = (y, x, size, orientation = HORIZONTAL) => {
       const ship = Ship(size);
+      ships.push(ship);
       for (let i = 0; i < size; i += 1) {
         if (orientation === VERTICAL) {
           if (!(isWithinBounds(y + i, x) && board[y + i][x] === EMPTY)) {
@@ -58,16 +61,21 @@ export default (() => {
       return true;
     };
 
+    /**
+     * @param {Number} y y-coordinate
+     * @param {Number} x x-coordinate
+     * @returns {Boolean} true if valid attack false otherwise
+     */
     const receiveAttack = (y, x) => {
-      if (isWithinBounds(y, x)) {
-        if (board[y][x] !== EMPTY && board[y][x] !== MISSED) {
+      if (isWithinBounds(y, x) && isAttackableCell(y, x)) {
+        if (board[y][x].hit) {
           board[y][x].hit();
           board[y][x] = HIT;
-          return true;
           // eslint-disable-next-line no-else-return
         } else {
           board[y][x] = MISSED;
         }
+        return true;
       }
       return false;
     };
@@ -99,7 +107,14 @@ export default (() => {
       }
       return true;
     };
-    return { allShipsSunk, missedAttacks, receiveAttack, placeShip, board };
+    return {
+      allShipsSunk,
+      missedAttacks,
+      receiveAttack,
+      placeShip,
+      board,
+      ships,
+    };
   };
 
   return { create, SIZE, EMPTY, MISSED, HIT, HORIZONTAL, VERTICAL };

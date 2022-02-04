@@ -14,8 +14,8 @@ test('cannot place ship outside of gameboard bounds', () => {
   expect(gb.placeShip(8, 8, 5)).toBe(false);
 });
 
-test('receive attack miss', () => {
-  expect(Gameboard.create().receiveAttack(1, 1)).toBe(false);
+test('receiveAttack miss returns true', () => {
+  expect(Gameboard.create().receiveAttack(1, 1)).toBe(true);
 });
 
 test('receive attack w/ successful hit', () => {
