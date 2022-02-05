@@ -67,6 +67,12 @@ export default (() => {
       for (let i = 0; i < size; i += 1) {
         mX = orientation === HORIZONTAL ? x + i : x;
         mY = orientation === VERTICAL ? y + i : y;
+        // properties to help with constructing ui
+        if (i === 0) {
+          ship.head = [mY, mX, orientation];
+        } else if (i === size - 1) {
+          ship.tail = [mY, mX, orientation];
+        }
         board[mY][mX] = ship;
       }
       return true;
