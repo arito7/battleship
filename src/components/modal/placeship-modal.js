@@ -63,11 +63,8 @@ export default () => {
         direction === Gameboard.HORIZONTAL ? 'h-ship-end' : 'v-ship-end';
 
       for (let i = 0; i < size; i += 1) {
-        if (direction === Gameboard.HORIZONTAL) {
-          mX = x + i;
-        } else if (direction === Gameboard.VERTICAL) {
-          mY = y + i;
-        }
+        mX = direction === Gameboard.HORIZONTAL ? x + i : x;
+        mY = direction === Gameboard.VERTICAL ? y + i : y;
         if (
           Gameboard.isWithinBounds(mY, mX) &&
           player.board[mY][mX] === Gameboard.EMPTY
@@ -127,6 +124,27 @@ export default () => {
       for (let x = 0; x < 10; x += 1) {
         if (player.board[y][x] !== Gameboard.EMPTY) {
           cells[y][x].classList.add('occupied');
+        }
+        if (
+          JSON.stringify(player.board[y][x].head) ===
+          JSON.stringify([y, x, Gameboard.VERTICAL])
+        ) {
+          cells[y][x].classList.add('v-ship-start');
+        } else if (
+          JSON.stringify(player.board[y][x].tail) ===
+          JSON.stringify([y, x, Gameboard.VERTICAL])
+        ) {
+          cells[y][x].classList.add('v-ship-end');
+        } else if (
+          JSON.stringify(player.board[y][x].head) ===
+          JSON.stringify([y, x, Gameboard.HORIZONTAL])
+        ) {
+          cells[y][x].classList.add('h-ship-start');
+        } else if (
+          JSON.stringify(player.board[y][x].tail) ===
+          JSON.stringify([y, x, Gameboard.HORIZONTAL])
+        ) {
+          cells[y][x].classList.add('h-ship-end');
         }
       }
     }
