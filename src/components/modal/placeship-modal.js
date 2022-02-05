@@ -5,6 +5,7 @@ import Gameboard from '../../js/gameboard';
 
 export default () => {
   const container = Modal();
+  container.content.classList.add('psmodal-content-container');
   const cells = [];
   const ships = (() => {
     const shipTypes = [
@@ -36,14 +37,17 @@ export default () => {
   rotateBtn.textContent = 'Rotate';
   container.content.appendChild(rotateBtn);
 
+  const shipTypeContainer = document.createElement('div');
   const shipType = document.createElement('p');
+  shipType.classList.add('ship-type');
   shipType.textContent = ships.getCurrentShipType();
-  container.content.appendChild(shipType);
+  shipTypeContainer.appendChild(shipType);
+  container.content.appendChild(shipTypeContainer);
 
   const player = Player(Gameboard.create());
 
   const gridContainer = document.createElement('div');
-  gridContainer.classList.add('psmodal-container');
+  gridContainer.classList.add('grid-container');
 
   rotateBtn.addEventListener('click', () => {
     changeDirection();
@@ -59,18 +63,18 @@ export default () => {
           ) {
             if (addOrRemove === 'add') {
               if (i === 0) {
-                cells[y][x + i].classList.add('psmodal-h-ship-start');
+                cells[y][x + i].classList.add('h-ship-start');
               } else if (i === size - 1) {
-                cells[y][x + i].classList.add('psmodal-h-ship-end');
+                cells[y][x + i].classList.add('h-ship-end');
               }
-              cells[y][x + i].classList.add('psmodal-hovered');
+              cells[y][x + i].classList.add('hovered');
             } else if (addOrRemove === 'remove') {
               if (i === 0) {
-                cells[y][x + i].classList.remove('psmodal-h-ship-start');
+                cells[y][x + i].classList.remove('h-ship-start');
               } else if (i === size - 1) {
-                cells[y][x + i].classList.remove('psmodal-h-ship-end');
+                cells[y][x + i].classList.remove('h-ship-end');
               }
-              cells[y][x + i].classList.remove('psmodal-hovered');
+              cells[y][x + i].classList.remove('hovered');
             }
           }
         } else if (direction === Gameboard.VERTICAL) {
@@ -79,18 +83,18 @@ export default () => {
             player.board[y + i][x] === Gameboard.EMPTY
           ) {
             if (addOrRemove === 'add') {
-              cells[y + i][x].classList.add('psmodal-hovered');
+              cells[y + i][x].classList.add('hovered');
               if (i === 0) {
-                cells[y + i][x].classList.add('psmodal-v-ship-start');
+                cells[y + i][x].classList.add('v-ship-start');
               } else if (i === size - 1) {
-                cells[y + i][x].classList.add('psmodal-v-ship-end');
+                cells[y + i][x].classList.add('v-ship-end');
               }
             } else if (addOrRemove === 'remove') {
-              cells[y + i][x].classList.remove('psmodal-hovered');
+              cells[y + i][x].classList.remove('hovered');
               if (i === 0) {
-                cells[y + i][x].classList.remove('psmodal-v-ship-start');
+                cells[y + i][x].classList.remove('v-ship-start');
               } else if (i === size - 1) {
-                cells[y + i][x].classList.remove('psmodal-v-ship-end');
+                cells[y + i][x].classList.remove('v-ship-end');
               }
             }
           }
@@ -121,14 +125,16 @@ export default () => {
 
   function render() {
     if (ships.getCurrentShipType()) {
+      shipTypeContainer.removeChild(shipType);
       shipType.textContent = ships.getCurrentShipType();
+      shipTypeContainer.appendChild(shipType);
     } else {
-      container.content.removeChild(shipType);
+      container.content.removeChild(shipTypeContainer);
     }
     for (let y = 0; y < 10; y += 1) {
       for (let x = 0; x < 10; x += 1) {
         if (player.board[y][x] !== Gameboard.EMPTY) {
-          cells[y][x].classList.add('psmodal-occupied');
+          cells[y][x].classList.add('occupied');
         }
       }
     }

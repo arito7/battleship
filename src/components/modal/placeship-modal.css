@@ -1,4 +1,4 @@
-.psmodal-container {
+.psmodal-content-container .grid-container {
   --cell-bgc: rgb(111, 162, 185);
   --cell-size: min(100vw / 2 / 10 - 1rem, var(--max-width) / 1.5 / 10 - 1rem);
   --cells-highlight: rgb(216, 137, 137);
@@ -9,34 +9,53 @@
   grid-template-rows: repeat(10, var(--cell-size));
 }
 
-.cell {
+.psmodal-content-container .ship-type {
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+  letter-spacing: 0.1rem;
+  margin: 0.5rem 0;
+  animation-name: slideIn;
+  animation-duration: 400ms;
+  overflow: hidden;
+}
+@keyframes slideIn {
+  0% {
+    margin-left: 50%;
+  }
+
+  100% {
+    margin-left: 0%;
+  }
+}
+.psmodal-content-container .cell {
   transition-property: background-color, border-radius;
   transition-duration: 300ms;
 }
-.cell.psmodal-occupied {
+.psmodal-content-container .cell.occupied {
   background-color: var(--ship-color);
 }
 
-.psmodal-hovered {
+.psmodal-content-container .hovered {
   background-color: var(--cells-highlight);
 }
 
-.cell.psmodal-v-ship-start {
+.psmodal-content-container .cell.v-ship-start {
   border-top-left-radius: 3rem;
   border-top-right-radius: 3rem;
 }
 
-.cell.psmodal-v-ship-end {
+.psmodal-content-container .cell.v-ship-end {
   border-bottom-left-radius: 3rem;
   border-bottom-right-radius: 3rem;
 }
 
-.cell.psmodal-h-ship-start {
+.psmodal-content-container .cell.h-ship-start {
   border-top-left-radius: 3rem;
   border-bottom-left-radius: 3rem;
 }
 
-.cell.psmodal-h-ship-end {
+.psmodal-content-container .cell.h-ship-end {
   border-top-right-radius: 3rem;
   border-bottom-right-radius: 3rem;
 }
