@@ -1,5 +1,5 @@
 :root {
-  --cell-size: calc(100vw / 2 / 10 - 1rem);
+  --cell-size: min(100vw / 2 / 10 - 1rem, var(--max-width) / 1.5 / 10 - 1rem);
   --enemy-bgc: #ae5656;
   --player-bgc: #5656ae;
   --main-bgc: rgb(70, 85, 92);
@@ -8,6 +8,7 @@
   --modal-bgc: var(--player-bgc);
   --cell-occupied: #ae9999;
   --shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  --max-width: 900px;
 }
 
 @font-face {
@@ -19,18 +20,22 @@
   box-sizing: border-box;
 }
 
-body {
+body,
+h2,
+h1 {
   margin: 0;
   padding: 0;
 }
 
 body {
+  background-color: var(--main-bgc);
   font-family: AlfaSlab, 'Courier New', Courier, monospace;
   height: 100vh;
   width: 100%;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr 6fr 1fr;
   grid-template-columns: 1fr;
+  justify-items: center;
 }
 
 button {
@@ -52,28 +57,37 @@ button:active {
 .header {
   background-color: var(--header-bgc);
   display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  max-width: var(--max-width);
   color: white;
-  justify-content: center;
+  justify-items: center;
+}
+
+h1 {
+  padding: 1rem;
 }
 
 .main {
   background-color: var(--main-bgc);
   height: 100%;
   display: grid;
+  max-width: var(--max-width);
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 1fr;
+  justify-content: center;
 }
 
 .enemyField,
 .playerField {
-  margin: 1rem;
-  border-radius: 0.5rem;
   display: grid;
-  justify-content: center;
   grid-template-columns: 1fr;
+  grid-template-rows: 1fr 6fr 4fr;
   justify-items: center;
-  grid-template-rows: auto 1fr auto;
-  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 0 1rem 1rem 1rem;
+  padding: 0 1rem 1rem 1rem;
+  align-items: center;
 }
 
 .playerField {
@@ -118,12 +132,12 @@ button:active {
   grid-template-columns: 1fr;
   width: 100%;
   gap: 0.5rem;
-  padding: 1.5rem 1.5rem 0 1.5rem;
+  padding: 0.75rem 1.5rem 0 1.5rem;
 }
 
 .boat {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
   align-items: center;
   width: 100%;
@@ -135,32 +149,6 @@ button:active {
   grid-template-rows: var(--cell-size);
   gap: 0.2rem;
   justify-content: end;
-}
-
-.modal {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  display: none;
-  background-color: #34343477;
-  padding: 20vh 2rem;
-  justify-content: center;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  align-content: flex-start;
-}
-
-.modal-content {
-  background-color: var(--modal-bgc);
-  border-radius: 0.5rem;
-  padding: 2rem;
-  display: grid;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
 }
 
 .visible {
