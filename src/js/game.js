@@ -134,6 +134,27 @@ export default (
         } else if (enemy.board[y][x] === Gameboard.MISSED) {
           enemyNodes[y][x].classList.add('missed');
         }
+        if (
+          JSON.stringify(player.board[y][x].head) ===
+          JSON.stringify([y, x, Gameboard.VERTICAL])
+        ) {
+          playerNodes[y][x].classList.add('v-ship-start');
+        } else if (
+          JSON.stringify(player.board[y][x].tail) ===
+          JSON.stringify([y, x, Gameboard.VERTICAL])
+        ) {
+          playerNodes[y][x].classList.add('v-ship-end');
+        } else if (
+          JSON.stringify(player.board[y][x].head) ===
+          JSON.stringify([y, x, Gameboard.HORIZONTAL])
+        ) {
+          playerNodes[y][x].classList.add('h-ship-start');
+        } else if (
+          JSON.stringify(player.board[y][x].tail) ===
+          JSON.stringify([y, x, Gameboard.HORIZONTAL])
+        ) {
+          playerNodes[y][x].classList.add('h-ship-end');
+        }
       }
     }
 
