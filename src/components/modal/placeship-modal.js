@@ -4,8 +4,8 @@ import Player from '../../js/player';
 import Gameboard from '../../js/gameboard';
 
 export default () => {
-  const container = Modal();
-  container.content.classList.add('psmodal-content-container');
+  const player = Player(Gameboard.create());
+  const modal = Modal();
   const cells = [];
   const ships = (() => {
     const shipTypes = [
@@ -31,23 +31,23 @@ export default () => {
         ? Gameboard.VERTICAL
         : Gameboard.HORIZONTAL;
   }
-  container.setTitle('Place your ships');
 
   const rotateBtn = document.createElement('button');
-  rotateBtn.textContent = 'Rotate';
-  container.content.appendChild(rotateBtn);
-
   const shipTypeContainer = document.createElement('div');
   const shipType = document.createElement('p');
-  shipType.classList.add('ship-type');
-  shipType.textContent = ships.getCurrentShipType();
-  shipTypeContainer.appendChild(shipType);
-  container.content.appendChild(shipTypeContainer);
-
-  const player = Player(Gameboard.create());
-
   const gridContainer = document.createElement('div');
+
+  modal.content.classList.add('psmodal-content-container');
+  shipType.classList.add('ship-type');
   gridContainer.classList.add('grid-container');
+
+  modal.setTitle('Place your ships');
+  rotateBtn.textContent = 'Rotate';
+  shipType.textContent = ships.getCurrentShipType();
+
+  modal.content.appendChild(rotateBtn);
+  shipTypeContainer.appendChild(shipType);
+  modal.content.appendChild(shipTypeContainer);
 
   rotateBtn.addEventListener('click', () => {
     changeDirection();
@@ -55,48 +55,37 @@ export default () => {
 
   const { cellEnterListener, cellLeaveListener } = (() => {
     function listenerTemplate(y, x, size, addOrRemove) {
+      let mY = y;
+      let mX = x;
+      const classStart =
+        direction === Gameboard.HORIZONTAL ? 'h-ship-start' : 'v-ship-start';
+      const classEnd =
+        direction === Gameboard.HORIZONTAL ? 'h-ship-end' : 'v-ship-end';
+
       for (let i = 0; i < size; i += 1) {
         if (direction === Gameboard.HORIZONTAL) {
-          if (
-            Gameboard.isWithinBounds(y, x + i) &&
-            player.board[y][x + i] === Gameboard.EMPTY
-          ) {
-            if (addOrRemove === 'add') {
-              if (i === 0) {
-                cells[y][x + i].classList.add('h-ship-start');
-              } else if (i === size - 1) {
-                cells[y][x + i].classList.add('h-ship-end');
-              }
-              cells[y][x + i].classList.add('hovered');
-            } else if (addOrRemove === 'remove') {
-              if (i === 0) {
-                cells[y][x + i].classList.remove('h-ship-start');
-              } else if (i === size - 1) {
-                cells[y][x + i].classList.remove('h-ship-end');
-              }
-              cells[y][x + i].classList.remove('hovered');
-            }
-          }
+          mX = x + i;
         } else if (direction === Gameboard.VERTICAL) {
-          if (
-            Gameboard.isWithinBounds(y + i, x) &&
-            player.board[y + i][x] === Gameboard.EMPTY
-          ) {
-            if (addOrRemove === 'add') {
-              cells[y + i][x].classList.add('hovered');
-              if (i === 0) {
-                cells[y + i][x].classList.add('v-ship-start');
-              } else if (i === size - 1) {
-                cells[y + i][x].classList.add('v-ship-end');
-              }
-            } else if (addOrRemove === 'remove') {
-              cells[y + i][x].classList.remove('hovered');
-              if (i === 0) {
-                cells[y + i][x].classList.remove('v-ship-start');
-              } else if (i === size - 1) {
-                cells[y + i][x].classList.remove('v-ship-end');
-              }
+          mY = y + i;
+        }
+        if (
+          Gameboard.isWithinBounds(mY, mX) &&
+          player.board[mY][mX] === Gameboard.EMPTY
+        ) {
+          if (addOrRemove === 'add') {
+            if (i === 0) {
+              cells[mY][mX].classList.add(classStart);
+            } else if (i === size - 1) {
+              cells[mY][mX].classList.add(classEnd);
             }
+            cells[mY][mX].classList.add('hovered');
+          } else if (addOrRemove === 'remove') {
+            if (i === 0) {
+              cells[mY][mX].classList.remove(classStart);
+            } else if (i === size - 1) {
+              cells[mY][mX].classList.remove(classEnd);
+            }
+            cells[mY][mX].classList.remove('hovered');
           }
         }
       }
@@ -123,13 +112,15 @@ export default () => {
     }
   }
 
+  function onClose(fn) {}
   function render() {
     if (ships.getCurrentShipType()) {
+      // removing and appending to trigger css animation
       shipTypeContainer.removeChild(shipType);
       shipType.textContent = ships.getCurrentShipType();
       shipTypeContainer.appendChild(shipType);
     } else {
-      container.content.removeChild(shipTypeContainer);
+      modal.content.removeChild(shipTypeContainer);
     }
     for (let y = 0; y < 10; y += 1) {
       for (let x = 0; x < 10; x += 1) {
@@ -157,7 +148,7 @@ export default () => {
     }
   })();
 
-  container.content.appendChild(gridContainer);
+  modal.content.appendChild(gridContainer);
 
-  return container;
+  return { container: modal, onClose };
 };
