@@ -1,31 +1,52 @@
 import Gameboard from './gameboard';
 import Player from './player';
 
-export default () => {
-  let player;
-  let enemy;
+export default (
+  playerNodeContainer,
+  enemyNodeContainer,
+  playerShipStates,
+  enemyShipStates,
+  player = Player(Gameboard.create()),
+  enemy = Player(Gameboard.create(), true)
+) => {
   let playerNodes;
   let enemyNodes;
-
+  let playerBoatNodes;
+  let enemyBoatNodes;
   /**
    * Holds callback functions for when game is over.
    * Will pass true if player wins false otherwise.
    */
   const onGameOver = [];
+  function triggerGameOver(args) {
+    onGameOver.forEach((fn) => {
+      fn(args);
+    });
+  }
 
   function resetNode(node) {
-    while (node.hasChildNodes()) {
-      node.removeChild(node.firstChild);
+    if (node instanceof NodeList) {
+      node.forEach((e) => {
+        while (e.hasChildNodes()) {
+          e.removeChild(e.firstChild);
+        }
+      });
+    } else {
+      while (node.hasChildNodes()) {
+        node.removeChild(node.firstChild);
+      }
     }
   }
 
-  function startGame(playerNodeContainer, enemyNodeContainer) {
+  function startGame() {
     resetNode(playerNodeContainer);
     resetNode(enemyNodeContainer);
-    player = Player(Gameboard.create());
-    enemy = Player(Gameboard.create());
+    resetNode(playerShipStates);
+    resetNode(enemyShipStates);
     playerNodes = [];
     enemyNodes = [];
+    playerBoatNodes = [];
+    enemyBoatNodes = [];
 
     function enemyCellListener(y, x) {
       player.attack(y, x, enemy);
@@ -56,6 +77,21 @@ export default () => {
           playerNodeContainer.appendChild(playerCell);
         }
       }
+      for (let i = 0; i < 5; i += 1) {
+        playerBoatNodes.push([]);
+        enemyBoatNodes.push([]);
+        for (let j = 0; j < player.ships[i].length; j += 1) {
+          const playerBoatStateCell = document.createElement('div');
+          playerBoatStateCell.classList.add('cell');
+          playerShipStates[i].appendChild(playerBoatStateCell);
+          playerBoatNodes[i].push(playerBoatStateCell);
+
+          const enemyBoatStateCell = document.createElement('div');
+          enemyBoatStateCell.classList.add('cell');
+          enemyShipStates[i].appendChild(enemyBoatStateCell);
+          enemyBoatNodes[i].push(enemyBoatStateCell);
+        }
+      }
     })();
 
     render();
@@ -63,9 +99,7 @@ export default () => {
 
   function checkGameState() {
     if (player.allShipsSunk() || enemy.allShipsSunk()) {
-      onGameOver.forEach((cb) => {
-        cb(enemy.allShipsSunk());
-      });
+      triggerGameOver(enemy.allShipsSunk());
     }
   }
 
@@ -73,11 +107,7 @@ export default () => {
     while (true) {
       const y = Math.round(Math.random() * 9);
       const x = Math.round(Math.random() * 9);
-      if (
-        player.board[y][x] !== Gameboard.HIT ||
-        player.board[y][x] !== Gameboard.MISSED
-      ) {
-        player.receiveAttack(y, x);
+      if (enemy.attack(y, x, player)) {
         break;
       }
     }
@@ -106,6 +136,17 @@ export default () => {
         }
       }
     }
+
+    for (let i = 0; i < player.ships.length; i += 1) {
+      for (let j = 0; j < player.ships[i].length; j += 1) {
+        if (player.ships[i].isSunk()) {
+          playerBoatNodes[i][j].classList.add('hit');
+        }
+        if (enemy.ships[i].isSunk()) {
+          enemyBoatNodes[i][j].classList.add('hit');
+        }
+      }
+    }
   }
-  return { startGame, onGameOver };
+  return { startGame, onGameOver, player };
 };

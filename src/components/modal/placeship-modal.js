@@ -112,7 +112,6 @@ export default () => {
     }
   }
 
-  function onClose(fn) {}
   function render() {
     if (ships.getCurrentShipType()) {
       // removing and appending to trigger css animation
@@ -121,6 +120,8 @@ export default () => {
       shipTypeContainer.appendChild(shipType);
     } else {
       modal.content.removeChild(shipTypeContainer);
+      modal.emit('close', [player]);
+      modal.hide();
     }
     for (let y = 0; y < 10; y += 1) {
       for (let x = 0; x < 10; x += 1) {
@@ -150,5 +151,5 @@ export default () => {
 
   modal.content.appendChild(gridContainer);
 
-  return { container: modal, onClose };
+  return { ...modal };
 };

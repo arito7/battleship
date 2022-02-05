@@ -7,6 +7,7 @@ export default (() => {
   const HIT = 2;
   const HORIZONTAL = 0;
   const VERTICAL = 1;
+
   /**
    * @param {number} x x-coordinate
    * @param {number} y y-coordinate
@@ -15,21 +16,33 @@ export default (() => {
   const isWithinBounds = (y, x) => y < SIZE && x < SIZE && y > -1 && x > -1;
 
   const create = () => {
-    const ships = [];
-    const board = [
-      Array(10).fill(EMPTY),
-      Array(10).fill(EMPTY),
-      Array(10).fill(EMPTY),
-      Array(10).fill(EMPTY),
-      Array(10).fill(EMPTY),
-      Array(10).fill(EMPTY),
-      Array(10).fill(EMPTY),
-      Array(10).fill(EMPTY),
-      Array(10).fill(EMPTY),
-      Array(10).fill(EMPTY),
-    ];
+    let ships;
+    let board;
+
     const isAttackableCell = (y, x) =>
+      // eslint-disable-next-line implicit-arrow-linebreak
       board[y][x] !== HIT && board[y][x] !== MISSED;
+
+    const isPlaceable = (y, x) => board[y][x] === EMPTY;
+
+    const reset = () => {
+      ships = [];
+      board = [
+        Array(10).fill(EMPTY),
+        Array(10).fill(EMPTY),
+        Array(10).fill(EMPTY),
+        Array(10).fill(EMPTY),
+        Array(10).fill(EMPTY),
+        Array(10).fill(EMPTY),
+        Array(10).fill(EMPTY),
+        Array(10).fill(EMPTY),
+        Array(10).fill(EMPTY),
+        Array(10).fill(EMPTY),
+      ];
+    };
+
+    reset();
+
     /**
      * @param {number} y y-coordinate
      * @param {number} x x-coordinate
@@ -40,23 +53,21 @@ export default (() => {
     const placeShip = (y, x, size, orientation = HORIZONTAL) => {
       const ship = Ship(size);
       ships.push(ship);
+      let mX;
+      let mY;
+
       for (let i = 0; i < size; i += 1) {
-        if (orientation === VERTICAL) {
-          if (!(isWithinBounds(y + i, x) && board[y + i][x] === EMPTY)) {
-            return false;
-          }
-        } else if (orientation === HORIZONTAL) {
-          if (!(isWithinBounds(y, x + i) && board[y][x + i] === EMPTY)) {
-            return false;
-          }
+        mX = orientation === HORIZONTAL ? x + i : x;
+        mY = orientation === VERTICAL ? y + i : y;
+        if (!(isWithinBounds(mY, mX) && isPlaceable(mY, mX))) {
+          return false;
         }
       }
+
       for (let i = 0; i < size; i += 1) {
-        if (orientation === VERTICAL) {
-          board[y + i][x] = ship;
-        } else if (orientation === HORIZONTAL) {
-          board[y][x + i] = ship;
-        }
+        mX = orientation === HORIZONTAL ? x + i : x;
+        mY = orientation === VERTICAL ? y + i : y;
+        board[mY][mX] = ship;
       }
       return true;
     };
@@ -107,7 +118,12 @@ export default (() => {
       }
       return true;
     };
+
+    /**
+     * Instance
+     */
     return {
+      reset,
       allShipsSunk,
       missedAttacks,
       receiveAttack,
@@ -117,5 +133,17 @@ export default (() => {
     };
   };
 
-  return { create, SIZE, EMPTY, MISSED, HIT, HORIZONTAL, VERTICAL };
+  /**
+   * Factory Static
+   */
+  return {
+    create,
+    SIZE,
+    EMPTY,
+    MISSED,
+    HIT,
+    HORIZONTAL,
+    VERTICAL,
+    isWithinBounds,
+  };
 })();
