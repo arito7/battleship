@@ -1,0 +1,26 @@
+.modal {
+  background-color: #34343477;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  padding: 20vh 2rem;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  align-content: center;
+  justify-items: center;
+}
+
+.modal-content {
+  background-color: var(--modal-bgc);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  gap: 1rem;
+  display: grid;
+  max-width: var(--max-width);
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
