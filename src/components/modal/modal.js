@@ -1,6 +1,17 @@
 import './modal.css';
 
 export default () => {
+  const events = { close: [] };
+  function emit(event, args) {
+    events[event].forEach((fn) => {
+      fn(...args);
+    });
+  }
+  function on(event, fn) {
+    if (events[event]) {
+      events[event].push(fn);
+    }
+  }
   const container = document.createElement('div');
   container.classList.add('modal');
 
@@ -23,5 +34,5 @@ export default () => {
     container.style.display = 'none';
   }
 
-  return { container, content, setTitle, show, hide };
+  return { container, content, setTitle, show, hide, emit, on };
 };
