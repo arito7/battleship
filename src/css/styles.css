@@ -109,6 +109,8 @@ h1 {
   border-radius: 0.2rem;
   cursor: pointer;
   background-color: var(--cell-bgc);
+  transition-property: background-color, border-radius;
+  transition-duration: 1000ms;
 }
 .cell:hover:not(.missed):not(.hit) {
   scale: 0.95;
@@ -121,12 +123,31 @@ h1 {
 
 .cell.hit {
   background-color: red;
+  border-radius: 50%;
 }
 
 .cell.missed {
   background-color: #343434;
 }
+.cell.v-ship-start {
+  border-top-left-radius: 3rem;
+  border-top-right-radius: 3rem;
+}
 
+.cell.v-ship-end {
+  border-bottom-left-radius: 3rem;
+  border-bottom-right-radius: 3rem;
+}
+
+.cell.h-ship-start {
+  border-top-left-radius: 3rem;
+  border-bottom-left-radius: 3rem;
+}
+
+.cell.h-ship-end {
+  border-top-right-radius: 3rem;
+  border-bottom-right-radius: 3rem;
+}
 .boats {
   display: grid;
   grid-template-columns: 1fr;
