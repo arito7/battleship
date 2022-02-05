@@ -1,14 +1,14 @@
 export default (length) => {
-  let life = length;
-
+  let mLife = length;
+  const life = mLife;
   const hit = () => {
-    if (life) {
-      life -= 1;
+    if (mLife) {
+      mLife -= 1;
       return true;
     }
     return false;
   };
-  const isSunk = () => !life;
+  const isSunk = () => !mLife;
 
-  return { length, hit, isSunk };
+  return { life, length, hit, isSunk };
 };
