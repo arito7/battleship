@@ -3,9 +3,9 @@ import Gameboard from '../js/gameboard';
 test('ship is placed correctly', () => {
   const gb = Gameboard.create();
   expect(gb.placeShip(1, 1, 4)).toBe(true);
-  expect(gb.board[1][1]).not.toBe(0);
-  expect(gb.board[1][2]).not.toBe(0);
-  expect(gb.board[2][1]).toBe(0);
+  expect(gb.board[1][1]).not.toBe(Gameboard.EMPTY);
+  expect(gb.board[1][2]).not.toBe(Gameboard.EMPTY);
+  expect(gb.board[2][1]).toBe(Gameboard.EMPTY);
 });
 
 test('cannot place ship outside of gameboard bounds', () => {
