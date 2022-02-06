@@ -5,7 +5,8 @@ export default (gameboard, bot = false) => {
       while (true) {
         const x = Math.round(Math.random() * 9);
         const y = Math.round(Math.random() * 9);
-        if (gameboard.placeShip(y, x, ship.size)) {
+        const orientation = Math.round(Math.random() * 1);
+        if (gameboard.placeShip(y, x, ship.size, orientation)) {
           break;
         }
       }
