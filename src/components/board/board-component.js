@@ -1,3 +1,6 @@
+import './board-component.css';
+import '../cell.css';
+
 export default () => {
   /**
    * Holds reference to cells in board [div elements]
