@@ -1,27 +1,12 @@
 import './css/styles.css';
 import Game from './js/game';
+import ShipStatusComponent from './components/ship-status/ship-status-component';
 
 (() => {
-  const playerGrid = document.querySelector('.playerField > .board');
-  const enemyGrid = document.querySelector('.enemyField > .board');
+  const main = document.querySelector('.main');
+  const playerField = document.querySelector('.playerField');
+  const enemyField = document.querySelector('.enemyField');
 
-  const gameOverModal = document.querySelector('.modal.gameover');
-  const btnPlayAgain = document.querySelector('.btn.play-again');
-
-  // const enemyTurnModal = document.querySelector('.modal.enemyturn');
-  const game = Game();
-  game.onGameOver.push((won) => {
-    const p = gameOverModal.querySelector('p');
-    p.textContent = won
-      ? 'Great job you won!'
-      : 'You have no ships remaining...';
-    gameOverModal.classList.add('visible');
-  });
-
-  game.startGame(playerGrid, enemyGrid);
-
-  btnPlayAgain.addEventListener('click', () => {
-    game.startGame(playerGrid, enemyGrid);
-    gameOverModal.classList.remove('visible');
-  });
+  const game = Game(main, playerField, enemyField);
+  game.startGame();
 })();
