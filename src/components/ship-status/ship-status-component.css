@@ -1,0 +1,23 @@
+.ships {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem 0 1.5rem;
+}
+
+.ship {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+  width: 100%;
+}
+
+.ship-slots {
+  display: grid;
+  grid-template-columns: repeat(5, var(--cell-size));
+  grid-template-rows: var(--cell-size);
+  gap: 0.2rem;
+  justify-content: end;
+}
