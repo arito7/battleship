@@ -2,13 +2,12 @@ import Gameboard from './gameboard';
 import Player from './player';
 import GameOverModal from '../components/modal/gameover-modal';
 import PlaceShipModal from '../components/modal/placeship-modal';
-import player from './player';
 import BoardComponent from '../components/board/board-component';
 import ShipStatusComponent from '../components/ship-status/ship-status-component';
 
 export default (mainContainer, playerField, enemyField) => {
   let mPlayer;
-  const enemy = Player(Gameboard.create(), true);
+  let enemy;
 
   const gameoverModal = GameOverModal();
   mainContainer.appendChild(gameoverModal.container);
@@ -18,10 +17,10 @@ export default (mainContainer, playerField, enemyField) => {
   playerField.appendChild(playerGrid.container);
   enemyField.appendChild(enemyGrid.container);
 
-  const playerShipStatus = ShipStatusComponent();
-  const enemyShipStatus = ShipStatusComponent();
-  playerField.appendChild(playerShipStatus);
-  enemyField.appendChild(enemyShipStatus);
+  // const playerShipStatus = ShipStatusComponent();
+  // const enemyShipStatus = ShipStatusComponent();
+  // playerField.appendChild(playerShipStatus.container);
+  // enemyField.appendChild(enemyShipStatus.container);
 
   gameoverModal.playAgainBtn.addEventListener(
     'click',
@@ -112,11 +111,16 @@ export default (mainContainer, playerField, enemyField) => {
   }
 
   function startGame() {
+    playerGrid.resetNode();
+    enemyGrid.resetNode();
+    enemy = Player(Gameboard.create(), true);
     const placeShipModal = PlaceShipModal();
     mainContainer.appendChild(placeShipModal.container);
 
     placeShipModal.on('close', (player) => {
       mPlayer = player;
+      // playerShipStatus.createNodes(mPlayer);
+      // enemyShipStatus.createNodes(enemy);
       placeShipModal.hide();
       render();
     });
@@ -125,6 +129,8 @@ export default (mainContainer, playerField, enemyField) => {
 
     function enemyCellListener(y, x) {
       mPlayer.attack(y, x, enemy);
+      // enemyShipStatus.render(enemy);
+      // playerShipStatus.render(mPlayer);
       render();
       checkGameState();
       aiMove();
@@ -145,8 +151,8 @@ export default (mainContainer, playerField, enemyField) => {
     function checkGameState() {
       if (mPlayer.allShipsSunk() || enemy.allShipsSunk()) {
         gameoverModal.eMsg.textContent = mPlayer.allShipsSunk()
-          ? 'You Won!'
-          : 'You Lost!';
+          ? 'You Lost!'
+          : 'You Won!';
         gameoverModal.show();
       }
     }
