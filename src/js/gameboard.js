@@ -8,6 +8,13 @@ export default (() => {
   const HORIZONTAL = 0;
   const VERTICAL = 1;
 
+  const SHIPS = [
+    { type: 'Carrier', size: 5 },
+    { type: 'BattleShip', size: 4 },
+    { type: 'Destroyer', size: 3 },
+    { type: 'Submarine', size: 3 },
+    { type: 'Patrol Boat', size: 2 },
+  ];
   /**
    * @param {number} x x-coordinate
    * @param {number} y y-coordinate
@@ -145,6 +152,7 @@ export default (() => {
   return {
     create,
     SIZE,
+    SHIPS,
     EMPTY,
     MISSED,
     HIT,
