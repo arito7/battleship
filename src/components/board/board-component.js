@@ -9,7 +9,7 @@ export default () => {
   const container = document.createElement('div');
   container.classList.add('grid-container');
 
-  (() => {
+  const mPopulate = () => {
     for (let y = 0; y < 10; y += 1) {
       cells.push(Array(10));
       for (let x = 0; x < 10; x += 1) {
@@ -21,7 +21,19 @@ export default () => {
         cells[y][x] = cell;
       }
     }
-  })();
+  };
 
-  return { container, cells };
+  /**
+   * Added so board can be easily reset when starting a new game
+   */
+  const resetNode = () => {
+    while (container.hasChildNodes()) {
+      container.removeChild(container.firstChild);
+    }
+    mPopulate();
+  };
+
+  mPopulate();
+
+  return { container, cells, resetNode };
 };
